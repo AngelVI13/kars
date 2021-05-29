@@ -65,16 +65,35 @@ impl<'a> Tree<'a> {
 
         return new_element_index;
     }
+
+    fn path(&self, node_index: usize) -> String {
+        let mut path = String::new();
+        let mut index = node_index;
+
+        loop {
+            let node = &self.arena[index];
+            path += &format!("_{}", node.name);
+
+            if let Some(parent_index) = node.parent{
+                index = parent_index;
+            } else {
+                break
+            }
+        }
+        return path;
+    }
 }
 
 fn main() {
     let mut tree: Tree = Tree::new();
 
     let child_1 = tree.add("Child1", tree.root);
-    let _ = tree.add("SubChild1", child_1);
+    let sub_child_1 = tree.add("SubChild1", child_1);
     let _ = tree.add("SubChild2", child_1);
     let _ = tree.add("Child2", tree.root);
     let _ = tree.add("Child3", tree.root);
 
-    println!("{:#?}", tree);
+    // println!("{:#?}", tree);
+    let node_path = tree.path(tree.arena[sub_child_1].index);
+    println!("{}", node_path);
 }
