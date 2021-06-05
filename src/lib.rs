@@ -20,23 +20,18 @@ impl<'a> Node<'a> {
 #[derive(Debug)]
 pub struct Tree<'a> {
     arena: Vec<Node<'a>>,
-    root: usize
+    root: usize,
 }
 
 impl<'a> Default for Tree<'a> {
     fn default() -> Self {
         let root_node = Node::new("Root", 0, None);
         let arena: Vec<Node> = vec![root_node];
-        Tree {
-            arena,
-            root: 0,
-        }
+        Tree { arena, root: 0 }
     }
 }
 
-
 impl<'a> Tree<'a> {
-
     pub fn new() -> Tree<'a> {
         Tree::default()
     }
