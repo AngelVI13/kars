@@ -66,6 +66,7 @@ impl<'a> Tree<'a> {
         return new_element_index;
     }
 
+    // TODO: Add version of this that does the same but keeps ordering from root - down
     fn path(&self, node_index: usize) -> String {
         let mut path = String::new();
         let mut index = node_index;
@@ -82,6 +83,21 @@ impl<'a> Tree<'a> {
         }
         return path;
     }
+
+    fn r_path(&self, node_index: usize) -> String {
+        let node = &self.arena[node_index];
+
+        // If we are not at the root -> get parent string,
+        // add our name to it and return that to lower caller
+        if let Some(parent_index) = node.parent{
+            let mut path = self.r_path(parent_index);
+            path += &format!("_{}", node.name);
+            return path;
+        } else {
+            // We are at the root -> just return the current name
+            return String::from(node.name);
+        }
+    }
 }
 
 fn main() {
@@ -94,6 +110,9 @@ fn main() {
     let _ = tree.add("Child3", tree.root);
 
     // println!("{:#?}", tree);
+    // TODO: add performance benchmark for these two functions
     let node_path = tree.path(tree.arena[sub_child_1].index);
+    let r_node_path = tree.r_path(tree.arena[sub_child_1].index);
     println!("{}", node_path);
+    println!("{}", r_node_path);
 }
